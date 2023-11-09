@@ -5,14 +5,11 @@ source .env
 docker network create --subnet=172.18.0.0/16 schedule_network
 
 docker run   --name schedule_postgres \
- -v  ./2023-09-07.dump:/docker-entrypoint-initdb.d/2023-09-07.dump \
  -p $DB_PORT:$DB_PORT -e POSTGRES_USER=$DB_USERNAME \
  -e POSTGRES_PASSWORD=$DB_PASSWORD \
  -e POSTGRES_DB=$DB_NAME -d --network schedule_network onjin/alpine-postgres
  
 docker exec -it schedule_postgres psql -U schedule -c "CREATE DATABASE schedule_test;"
-
-docker exec -it schedule_postgres psql -U schedule -d schedule -f /docker-entrypoint-initdb.d/2023-09-07.dump
 
 docker run --name schedule_mongo \
  -d --network schedule_network mvertes/alpine-mongo
