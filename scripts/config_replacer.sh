@@ -29,10 +29,10 @@ config_files=(
 replace_placeholders() {
   local file="$1"
   while IFS= read -r line; do
-    key=$(echo "$line" | sed 's/\$//')
+    key=$(echo "$line" | sed 's/\${//;s/}//')
     value=$(echo "${!key}")
     sed -i "s|\${$key}|$value|g" "$file"
-  done < <(grep -o "\$[A-Za-z_][A-Za-z_0-9]*" "$file")
+  done < <(grep -o "\${[A-Za-z_][A-Za-z_0-9]*}" "$file")
 }
 
 for file in "${config_files[@]}"; do
