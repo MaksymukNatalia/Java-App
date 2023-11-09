@@ -42,6 +42,8 @@ In order to create a local copy of the project you need:
        npm install
 3. After the installation is finished run the following command to start the frontend server
 
+       npm start
+
 ## Project structure 
 Diagram as a code:
 
