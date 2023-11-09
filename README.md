@@ -73,3 +73,8 @@ npm install
 ```
 npm start
 ```
+
+## Project structure 
+Diagram as a code:
+
+![schedule_web_service](https://github.com/MaksymukNatalia/Schedule/assets/146463470/258745e1-26df-48b8-b10f-38a4c21d551c)
