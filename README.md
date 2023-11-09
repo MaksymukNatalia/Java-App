@@ -73,6 +73,7 @@ npm install
 ```
 npm start
 ```
+
 ## STAGE environment configuration
 
 In order to create a local copy of the project you need:
@@ -94,4 +95,10 @@ cd scripts | chmod +x run_stage.sh
 ```
 
 
+
+
+## Project structure 
+Diagram as a code:
+
+![schedule_web_service](https://github.com/MaksymukNatalia/Schedule/assets/146463470/258745e1-26df-48b8-b10f-38a4c21d551c)
 
