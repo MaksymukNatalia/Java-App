@@ -3,8 +3,7 @@ pipeline {
     stages {
 	stage('Build Gradle') {
             steps {
-                sh 'cd  /var/lib/jenkins/workspace/Schedule'
-                sh 'gradle build.gradle -x test'
+                sh 'gradle build -x test'
 		sh 'cd build /build/lib'
                 sh 'ls'
             }
