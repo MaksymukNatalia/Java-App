@@ -2,8 +2,7 @@ pipeline {
     agent any
     stages {
 	stage('Build Gradle') {
-            steps {
-		sh 'cd /Schedule'    
+            steps {  
                 sh 'gradle build.gradle -x test'
 		sh 'cd build /build/lib'
                 sh 'ls'
