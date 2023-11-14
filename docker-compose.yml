@@ -1,0 +1,55 @@
+version: "3.7"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:14.0
+    restart: always
+    env_file: .env
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./scripts/init_test_bd.sh:/docker-entrypoint-initdb.d/init_test_bd.sh
+    networks:
+      - prodnet
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    restart: always
+    networks:
+      - prodnet
+    env_file: .env
+
+  redis:
+    container_name: redis
+    image: redis:alpine
+    restart: always
+    networks:
+      - prodnet
+
+  web:
+    container_name: schedule_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - mongo
+      - redis
+    ports:
+      - "8080:8080"
+    networks:
+      - prodnet
+    env_file: .env
+
+networks:
+  prodnet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16
