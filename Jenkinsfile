@@ -1,12 +1,12 @@
 pipeline {
     agent any
-    stage('Build Gradle') {
+    stages {
+	stage('Build Gradle') {
             steps {
                 sh 'cd  /var/lib/jenkins/workspace/Schedule'
                 sh 'gradle build -x test'
             }
         }
-    stages {
         stage('Docker') {
             steps {
                 script {
