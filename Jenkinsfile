@@ -9,6 +9,7 @@ pipeline {
 	        script {
 			sh 'mkdir -p artifact'
 			sh 'echo DB_HOST=postgres >> .env'
+			sh 'echo DB_PORT=5432 >> .env'
 			sh 'echo DB_NAME=schedule >> .env'
 			sh 'echo DB_USERNAME=schedule >> .env'
 			sh 'echo DB_PASSWORD=pass >> .env'
