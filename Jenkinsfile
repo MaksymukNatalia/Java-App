@@ -25,7 +25,8 @@ pipeline {
 			sh 'cat .env'
 			sh 'mv ./build/libs/class_schedule.war ./artifact/ROOT.war'
 		}
-        }
+	    }
+	}
         stage('Docker') {
             steps {
                 script {
