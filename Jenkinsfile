@@ -30,7 +30,7 @@ pipeline {
 				sh 'echo MONGO_SERVER=mongo >> .env'
 				sh 'cat .env'
 				sh 'mv .env /var/lib/jenkins/workspace/Joba1/'
-                    		sh 'docker compose --build -f docker-compose-prod.yaml'
+                    		sh 'docker compose -f docker-compose-prod.yaml'
                 	}
                 }
             }
