@@ -15,9 +15,9 @@ pipeline {
             steps {
                 script {
                 	sh 'echo DB_HOST=postgres >> .env'
-			sh 'echo POSTGRES_DB=schedule >> .env'
-			sh 'echo POSTGRES_USER=schedule >> .env'
-			sh 'echo POSTGRES_PASSWORD=pass >> .env'
+			sh 'echo DB_NAME=schedule >> .env'
+			sh 'echo DB_USERNAME=schedule >> .env'
+			sh 'echo DB_PASSWORD=pass >> .env'
 			sh 'echo TEST_DB_HOST=172.18.0.2 >> .env'
 			sh 'echo TEST_DB_NAME=schedule_test >> .env'
 			sh 'echo TEST_DB_USERNAME=schedule >> .env'
