@@ -1,1 +1,2 @@
 test file for testing ping from github to jenkins
+test text
