@@ -28,7 +28,7 @@ pipeline {
 			sh 'echo MONGO_DATABASE=schedules >> .env'
 			sh 'echo MONGO_SERVER=mongo >> .env'
 			sh 'cat .env'
-                    	sh 'docker compose -f docker-compose.yml up'
+                    	sh 'docker compose -f docker-compose-prod.yml up'
                 }
             }
         }
