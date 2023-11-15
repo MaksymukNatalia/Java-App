@@ -7,9 +7,8 @@ pipeline {
 	stage('Build Gradle') {
             steps {  
                 sh 'gradle build -x test'
-		sh 'mkdir artifact'
-		sh 'pwd'
-		sh 'mv build /build/lib/class_shedule.war /artifact/Root.war'
+		sh 'mkdir -p artifact'
+		sh 'mv ./build/libs/class_schedule.war ./artifact/ROOT.war'
             }
         }
         stage('Docker') {
