@@ -1,9 +1,12 @@
 pipeline {
     agent any
+    tools {
+	gradle '7.3.3'
+    }
     stages {
 	stage('Build Gradle') {
             steps {  
-                sh 'gradle build.gradle -x test'
+                sh 'gradle build -x test'
 		sh 'cd build /build/lib'
                 sh 'ls'
             }
