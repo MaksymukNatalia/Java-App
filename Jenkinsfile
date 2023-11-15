@@ -7,8 +7,9 @@ pipeline {
 	stage('Build Gradle') {
             steps {  
                 sh 'gradle build -x test'
-		sh 'cd build /build/lib'
-                sh 'ls'
+		sh 'mkdir artifact'
+		sh 'pwd'
+		sh 'mv build /build/lib/class_shedule.war /artifact/Root.war'
             }
         }
         stage('Docker') {
@@ -29,7 +30,7 @@ pipeline {
 				sh 'echo MONGO_DATABASE=schedules >> .env'
 				sh 'echo MONGO_SERVER=mongo >> .env'
 				sh 'cat .env'
-				sh 'mv .env /var/lib/jenkins/workspace/joba_1/'
+				sh 'mv .env /var/lib/jenkins/workspace/Joba1/'
                     		sh 'docker compose up -f docker-compose-prod.yaml --build'
                 	}
                 }
