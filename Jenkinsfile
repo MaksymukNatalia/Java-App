@@ -7,7 +7,6 @@ pipeline {
 	stage('Build Gradle') {
             steps { 
 	        script {
-	                sh 'gradle build -x test'
 			sh 'mkdir -p artifact'
 			sh 'echo DB_HOST=postgres >> .env'
 			sh 'echo DB_NAME=schedule >> .env'
@@ -23,6 +22,7 @@ pipeline {
 			sh 'echo MONGO_DATABASE=schedules >> .env'
 			sh 'echo MONGO_SERVER=mongo >> .env'
 			sh 'cat .env'
+			sh 'gradle build -x test'
 			sh 'mv ./build/libs/class_schedule.war ./artifact/ROOT.war'
 		}
 	    }
