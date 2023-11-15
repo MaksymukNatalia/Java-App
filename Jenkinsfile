@@ -59,7 +59,7 @@ pipeline {
         }
         stage('Run tests against the container') {
             steps {
-                sh 'curl http://localhost:8080'
+                sh 'curl 127.0.0.1:8080'
             }
         }
     }
