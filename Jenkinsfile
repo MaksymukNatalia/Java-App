@@ -6,6 +6,9 @@ pipeline {
     environment {
 	envfile = credentials('envfile')
     }
+    triggers {
+	pollSCM '* * * * *'
+    }
     stages {
 	stage('Build Gradle') {
             steps { 
