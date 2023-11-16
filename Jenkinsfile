@@ -28,14 +28,18 @@ pipeline {
             }
         }
         stage('tests the container') {
-            environment {
-		response=$(curl --write-out '%{http_code}' --silent --output /dev/null localhost:8080);
-	    }
 	    steps {
-		sh 'sleep 2m'
-                sh 'curl http://127.0.0.1:8080'
-		sh 'if [ $response -eq 200 ]; then echo "Site good" else echo "no" fi'
-            }
+                     script {
+                    def responseCode = sh(script: 'curl --write-out "%{http_code}" --silent --output /dev/null localhost:8080', returnStatus: true).trim()
+
+                    def response = responseCode.toInteger()
+
+                    if (response == 200) {
+                        echo 'Site good'
+                    } else {
+                        error 'Site not good'
+                    }   
+	 }
         }
     }
 /*   post {
