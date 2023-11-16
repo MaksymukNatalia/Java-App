@@ -38,12 +38,17 @@ pipeline {
                 script {
                     def responseCode = sh(script: 'curl --write-out "%{http_code}" --silent --output /dev/null localhost:8080', returnStatus: true).trim()
 
-                    def response = responseCode.toInteger()
+                    // Check if the responseCode is not empty before converting to Integer
+                    if (responseCode) {
+                        def response = responseCode.toInteger()
 
-                    if (response == 200) {
-                        echo 'Site good'
+                        if (response == 200) {
+                            echo 'Site good'
+                        } else {
+                            error 'Site not good'
+                        }
                     } else {
-                        error 'Site not good'
+                        error 'Failed to get HTTP response code'
                     }
                 }
             }
