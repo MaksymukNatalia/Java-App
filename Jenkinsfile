@@ -3,11 +3,16 @@ pipeline {
     tools {
 	gradle '7.3.3'
     }
+    environment {
+	envfile = credentials('envfile')
+    }
     stages {
 	stage('Build Gradle') {
             steps { 
 	        script {
 			sh 'mkdir -p artifact'
+			sh 'cat $envfile > .env'
+			/*
 			sh 'echo DB_HOST=postgres >> .env'
 			sh 'echo DB_PORT=5432 >> .env'
 			sh 'echo DB_NAME=schedule >> .env'
@@ -44,6 +49,7 @@ pipeline {
 			sh 'echo TEST_DB_NAME=schedule_test >> .env'
 			sh 'echo TEST_DB_USERNAME=schedule_test >> .env'
 			sh 'echo TEST_DB_PASSWORD=test >> .env'
+   */
 			sh 'cat .env'
 			sh 'gradle build -x test'
 			sh 'mv ./build/libs/class_schedule.war ./artifact/ROOT.war'
