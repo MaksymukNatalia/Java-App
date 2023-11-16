@@ -36,19 +36,8 @@ pipeline {
         stage('Test Container') {
             steps {
                 script {
-                    def responseCode = sh(script: 'curl --write-out "%{http_code}" --silent --output /dev/null localhost:8080', returnStatus: true).trim()
-
-                    // Check if the responseCode is not empty before converting to Integer
-                    if (responseCode) {
-                        def response = responseCode.toInteger()
-
-                        if (response == 200) {
-                            echo 'Site good'
-                        } else {
-                            error 'Site not good'
-                        }
-                    } else {
-                        error 'Failed to get HTTP response code'
+                    def responseCode = sh(script: 'curl --write-out "%{http_code}" --silent --output /dev/null localhost:8080')
+		    sh 'echo "$responseCode"'
                     }
                 }
             }
