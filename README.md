@@ -94,10 +94,72 @@ cd scripts | chmod +x run_stage.sh
 ./run_stage.sh
 ```
 
+# Instructions for Production Environment
+
+## Creating a Local Repository
+To create a local copy of the project, follow these steps:
+
+1. Download and install the latest version of Git from [git-scm.com](https://git-scm.com/downloads).
+2. Open a terminal and navigate to the directory where you want to clone the files.
+3. Run the following command. Git will automatically create a folder with the repository name and download the files.
+
+   ```bash
+   git clone https://github.com/MaksymukNatalia/Schedule.git
+
+## Set Environment
+
+After cloning the repository, change `.envsample` to `.env`.
+
+mv .envsample .env
+
+Set the appropriate values in the `.env` file. 
+
+## Docker Setup
+
+Download and install the latest version of Docker from [docs.docker.com](https://docs.docker.com/get-docker/).
+
+## Application Deployment
+
+To deploy the application, follow these steps:
+
+1. Open a terminal in the project directory.
+
+2. Run the following command to build and start the Docker containers.
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    After the build is finished, access the application using:
+
+    ```bash
+    curl http://localhost:8080/public/semesters
+    ```
+
+### Environment file
+
+- `DB_HOST`: The host address of the database server.
+- `POSTGRES_USER`: The owner the database.
+- `POSTGRES_DB`: Your current database.
+- `POSTGRES_PASSWORD`: Your password for `POSTGRES_USER` .
 
 
+### Troubleshooting
 
-## Project structure 
+- **Issue: Incorrect Docker Installation.**
+  - *Solution:* 
+    - Check if Docker is installed by running `docker --version` in the terminal.
+    - Ensure Docker is running with `docker info`.
+    - Refer to the [official Docker documentation](https://docs.docker.com/get-docker/) for troubleshooting installation issues.
+
+- **Issue: Unable to start Docker containers.**
+  - *Solution:* Check if Docker is running, and ensure no other processes are using the required ports.
+
+- **Issue: Incorrect data in the application.**
+  - *Solution:* Verify the values of environment variables in the `.env` file and restart the application.
+
+
+### Project structure 
 Diagram as a code:
 
 ![schedule_web_service](https://github.com/MaksymukNatalia/Schedule/assets/146463470/258745e1-26df-48b8-b10f-38a4c21d551c)
