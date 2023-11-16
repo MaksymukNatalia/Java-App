@@ -34,13 +34,6 @@ pipeline {
             }
         }
     }
-    post {
-	always {
-		script {
-			sh 'docker-compose -f docker-compose-prod.yml down --volumes'
-		}
-	}
-    }
 /*   post {
         always {
             sh 'docker-compose down'
