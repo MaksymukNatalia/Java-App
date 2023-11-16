@@ -29,7 +29,7 @@ pipeline {
         }
         stage('tests the container') {
 	    steps {
-                     script {
+                 script {
                     def responseCode = sh(script: 'curl --write-out "%{http_code}" --silent --output /dev/null localhost:8080', returnStatus: true).trim()
 
                     def response = responseCode.toInteger()
@@ -39,13 +39,8 @@ pipeline {
                     } else {
                         error 'Site not good'
                     }   
-	 }
+		 }
         }
     }
-/*   post {
-        always {
-            sh 'docker-compose down'
-        }
-    }
-    */
+}
 }
