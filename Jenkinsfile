@@ -27,6 +27,7 @@ pipeline {
         }
         stage('Run tests against the container') {
             steps {
+		sh 'sleep -m 2'
                 sh 'curl http://127.0.0.1:8080'
             }
         }
