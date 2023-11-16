@@ -74,7 +74,31 @@ npm install
 npm start
 ```
 
+## STAGE environment configuration
+
+In order to create a local copy of the project you need:
+1. Download and install the last version of Git https://git-scm.com/downloads
+2. Open a terminal and go to the directory where you want to clone the files. 
+3. Run the following command. Git automatically creates a folder with the repository name and downloads the files there.
+   
+```
+git clone https://github.com/MaksymukNatalia/Schedule.git
+```
+4. Go to scripts folder and change permissinos to run script
+
+```
+cd scripts | chmod +x run_stage.sh
+```
+5. Run script the following command
+```
+./run_stage.sh
+```
+
+
+
+
 ## Project structure 
 Diagram as a code:
 
 ![schedule_web_service](https://github.com/MaksymukNatalia/Schedule/assets/146463470/258745e1-26df-48b8-b10f-38a4c21d551c)
+
