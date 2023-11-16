@@ -28,9 +28,13 @@ pipeline {
             }
         }
         stage('tests the container') {
-            steps {
+            environment {
+		response=$(curl --write-out '%{http_code}' --silent --output /dev/null localhost:8080);
+	    }
+	    steps {
 		sh 'sleep 2m'
                 sh 'curl http://127.0.0.1:8080'
+		sh 'if [ $response -eq 200 ]; then echo "Site good" else echo "no" fi'
             }
         }
     }
