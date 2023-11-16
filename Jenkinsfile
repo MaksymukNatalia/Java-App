@@ -12,7 +12,6 @@ pipeline {
 	        script {
 			sh 'mkdir -p artifact'
 			sh 'cat $envfile > .env'
-			sh 'cat .env'
 			sh 'gradle build -x test'
 			sh 'mv ./build/libs/class_schedule.war ./artifact/ROOT.war'
 		}
