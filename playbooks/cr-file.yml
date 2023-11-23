@@ -4,5 +4,5 @@
   tasks:
   - name: Creating an empty file
     file:
-      path: "${HOME}"
+      path: "${HOME}/file1.txt"
       state: touch
