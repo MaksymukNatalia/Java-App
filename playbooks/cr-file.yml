@@ -1,0 +1,8 @@
+---
+
+- hosts: "{{ DB_HOST }}"
+  tasks:
+  - name: Creating an empty file
+    file:
+      path: "${HOME}"
+      state: touch
