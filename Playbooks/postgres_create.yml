@@ -1,0 +1,36 @@
+- name: Create GCP Instance and PostgreSQL Database
+  hosts: localhost
+  gather_facts: False
+  tasks:
+    - name: Create GCP Instance
+      gcp_compute_instance:
+        name: postgres-instance
+        machine_type: projects/schedule-405513/zones/europe-north1-a/machineTypes/n1-standard-1
+        disk_size_gb: 10
+        image: projects/debian-cloud/global/images/debian-9-stretch-v20210902
+        state: present
+      delegate_to: localhost
+
+    - name: Install PostgreSQL
+      become: yes
+      apt:
+        name: postgresql
+        state: present
+
+    - name: Create Database from SQL File
+      become: yes
+      postgresql_db:
+        name: schedule
+        login_host: "{{ DB_HOST }}"
+        login_user: "{{ POSTGRES_USER }}"
+        login_password: "{{ POSTGRES_PASSWORD }}"
+        state: import
+        target: "{{ PATH_TO_RESTORE_FILE }}"
+
+    - name: Schedule SQL File to Run Every Minute
+      become: yes
+      cron:
+        name: Run SQL File Every Minute
+        minute: "*"
+        job: "psql -h localhost -U postgres -d mydatabase < {{ PATH_TO_FIX_SQL_FILE }}"
+
