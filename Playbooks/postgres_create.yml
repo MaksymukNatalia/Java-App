@@ -2,14 +2,14 @@
   hosts: localhost
   gather_facts: False
   tasks:
-    - name: Create GCP Instance
-      gcp_compute_instance:
-        name: postgres-instance
-        machine_type: projects/schedule-405513/zones/europe-north1-a/machineTypes/n1-standard-1
-        disk_size_gb: 10
-        image: projects/debian-cloud/global/images/debian-9-stretch-v20210902
-        state: present
-      delegate_to: localhost
+  #  - name: Create GCP Instance
+  #    gcp_compute_instance:
+  #      name: postgres-instance
+   #     machine_type: projects/schedule-405513/zones/europe-north1-a/machineTypes/n1-standard-1
+    #    disk_size_gb: 10
+    #    image: projects/debian-cloud/global/images/debian-9-stretch-v20210902
+     #   state: present
+    #  delegate_to: localhost
 
     - name: Install PostgreSQL
       become: yes
