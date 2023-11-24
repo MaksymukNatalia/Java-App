@@ -1,6 +1,8 @@
 ---
 - name: Create GCP Instance and PostgreSQL Database
   hosts: 146.148.104.14
+  collections:
+    - community.general
   gather_facts: false
   tasks:
     - name: Install dependencies for PostgreSQL
@@ -34,7 +36,7 @@
     - name: Create the database specified in vars
       become: true
       become_user: postgres
-      community.general.postgresql_db:
+      postgresql_db:
         name: "{{ DB_NAME }}"
         template: 'template0'
         state: present
@@ -42,7 +44,7 @@
     - name: Ensure user has access to the new database
       become: true
       become_user: postgres
-      community.general.postgresql_user:
+      postgresql_user:
         db: "{{ DB_NAME }}"
         name: "{{ POSTGRES_USER }}"
         password: "{{ POSTGRES_PASSWORD }}"
@@ -52,7 +54,7 @@
     - name: Ensure user does not have unnecessary permissions
       become: true
       become_user: postgres
-      community.general.postgresql_user:
+      postgresql_user:
         name: "{{ POSTGRES_USER }}"
         role_attr_flags: NOSUPERUSER,NOCREATEDB
         state: present
