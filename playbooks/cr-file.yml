@@ -1,6 +1,6 @@
 ---
 
-- hosts: postgres-vms
+- hosts: awx-ss
   tasks:
   - name: Creating an empty file
     file:
