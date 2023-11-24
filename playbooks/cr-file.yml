@@ -1,6 +1,6 @@
 ---
 
-- hosts: awx-ss
+- hosts: 34.136.192.212
   tasks:
   - name: Creating an empty file
     file:
