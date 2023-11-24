@@ -8,18 +8,21 @@
       apt:
         name: postgresql
         state: present
-        #    - name: Create Database from SQL File
-        #become: yes
-        #community.general.postgresql_db:
-        #name: schedule
-        #login_host: "{{ DB_HOST }}"
-        #login_user: "{{ POSTGRES_USER }}"
-        #login_password: "{{ POSTGRES_PASSWORD }}"
-        #state: import
-        #target: "{{ PATH_TO_RESTORE_FILE }}"
-        #  - name: Schedule SQL File to Run Every Minute
-        #become: yes
-        #cron:
-        #name: Run SQL File Every Minute
-        #minute: "*"
-        #job: psql -h localhost -U postgres -d mydatabase < {{ PATH_TO_FIX_SQL_FILE }}
+
+    - name: Create Database from SQL File
+      become: yes
+      community.general.postgresql_db:
+        name: schedule
+        login_host: "{{ DB_HOST }}"
+        login_user: "{{ POSTGRES_USER }}"
+        login_password: "{{ POSTGRES_PASSWORD }}"
+        state: import
+        target: "{{ PATH_TO_RESTORE_FILE }}"
+
+    - name: Schedule SQL File to Run Every Minute
+      become: yes
+      cron:
+        name: Run SQL File Every Minute
+        minute: "*"
+        job: "psql -h localhost -U "{{ POSTGRES_USER }}" -d schedule < {{ PATH_TO_FIX_SQL_FILE }}"
+
