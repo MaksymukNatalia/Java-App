@@ -50,6 +50,10 @@
       command: >
         sudo -u postgres psql -c "ALTER USER {{ db_user }} WITH NOSUPERUSER NOCREATEDB;"
       become: true
-
-    - name: Add some dummy data to our database
-      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./scripts/init.sql
+      
+    - name: Find out playbook's path
+      shell: pwd
+      register: playbook_path_output
+    - debug: var=playbook_path_output.stdout
+    #- name: Add some dummy data to our database
+    #  shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./scripts/init.sql
