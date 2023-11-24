@@ -52,5 +52,5 @@
       become: true
 
     - name: Add some dummy data to our database
-      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < /tmp/dump.sql
+      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ../scripts/init.sql
 
