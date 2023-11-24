@@ -1,6 +1,6 @@
 ---
 - name: Create GCP Instance and PostgreSQL Database
-  hosts: postgres-vms
+  hosts: 34.136.192.212
   gather_facts: false
   tasks:
     - name: Install PostgreSQL
