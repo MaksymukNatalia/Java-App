@@ -1,6 +1,6 @@
 ---
 
-- hosts: 34.136.192.212
+- hosts: group-postgres
   tasks:
   - name: Creating an empty file
     file:
