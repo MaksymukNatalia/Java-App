@@ -1,6 +1,6 @@
 ---
 
-- hosts: "{{ DB_HOST }}"
+- hosts: postgres-vms
   tasks:
   - name: Creating an empty file
     file:
