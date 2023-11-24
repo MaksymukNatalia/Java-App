@@ -1,5 +1,5 @@
 - name: Create GCP Instance and PostgreSQL Database
-  hosts: "{{ DB_HOST }}"
+  hosts: postgres-vms
   gather_facts: False
   tasks:
 
