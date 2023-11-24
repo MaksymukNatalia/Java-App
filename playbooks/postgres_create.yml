@@ -10,7 +10,7 @@
         state: present
     - name: Create Database from SQL File
       become: yes
-      postgresql_db:
+      community.general.postgresql_db:
         name: schedule
         login_host: "{{ DB_HOST }}"
         login_user: "{{ POSTGRES_USER }}"
