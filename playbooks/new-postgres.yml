@@ -30,6 +30,9 @@
         name: postgresql
         state: started
         enabled: yes
+    
+    - name: Add some dummy data to our database
+      shell: pwd
 
     - name: Create the database specified in vars
       command: >
@@ -50,7 +53,4 @@
       command: >
         sudo -u postgres psql -c "ALTER USER {{ db_user }} WITH NOSUPERUSER NOCREATEDB;"
       become: true
-
-    - name: Add some dummy data to our database
-      shell: pwd
 
