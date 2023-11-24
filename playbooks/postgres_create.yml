@@ -1,14 +1,13 @@
+---
 - name: Create GCP Instance and PostgreSQL Database
-  hosts: group-postgres
-  gather_facts: False
+  hosts: postgres-vms
+  gather_facts: false
   tasks:
-
     - name: Install PostgreSQL
       become: yes
       apt:
         name: postgresql
         state: present
-
     - name: Create Database from SQL File
       become: yes
       postgresql_db:
@@ -18,11 +17,9 @@
         login_password: "{{ POSTGRES_PASSWORD }}"
         state: import
         target: "{{ PATH_TO_RESTORE_FILE }}"
-
     - name: Schedule SQL File to Run Every Minute
       become: yes
       cron:
         name: Run SQL File Every Minute
         minute: "*"
-        job: "psql -h localhost -U postgres -d mydatabase < {{ PATH_TO_FIX_SQL_FILE }}"
-
+        job: psql -h localhost -U postgres -d mydatabase < {{ PATH_TO_FIX_SQL_FILE }}
