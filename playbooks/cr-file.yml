@@ -6,3 +6,6 @@
     file:
       path: "${HOME}/file1.txt"
       state: touch
+  - name: Show host's ip
+    debug:
+      msg: "{{ ansible_ssh_host }}"
