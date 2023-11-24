@@ -1,6 +1,6 @@
 ---
 - name: Create GCP Instance and PostgreSQL Database
-  hosts: 34.136.192.212
+  hosts: 146.148.104.14
   gather_facts: false
   tasks:
     - name: Install dependencies for PostgreSQL
