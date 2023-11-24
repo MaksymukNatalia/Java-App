@@ -59,7 +59,7 @@
     - name: "Copy backup to the server"
       copy:
         src: "scripts/init.sql"
-        dest: "{{ $HOME }}"
+        dest: "/home/bobrja"
         
     - name: Add some dummy data to our database
       shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./init.sql
