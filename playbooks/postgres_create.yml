@@ -24,5 +24,5 @@
       cron:
         name: Run SQL File Every Minute
         minute: "*"
-        job: "psql -h localhost -U "{{ POSTGRES_USER }}" -d schedule < {{ PATH_TO_FIX_SQL_FILE }}"
+        job: "psql -h localhost -U {{ POSTGRES_USER }} -d schedule < {{ PATH_TO_FIX_SQL_FILE }}"
 
