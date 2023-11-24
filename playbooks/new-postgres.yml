@@ -1,8 +1,6 @@
 ---
 - name: Create GCP Instance and PostgreSQL Database
-  hosts: 146.148.104.14
-  collections:
-    - community.general
+  hosts: 34.136.192.212
   gather_facts: false
   tasks:
     - name: Install dependencies for PostgreSQL
@@ -34,33 +32,25 @@
         enabled: yes
 
     - name: Create the database specified in vars
+      command: >
+        sudo -u postgres psql -c "CREATE DATABASE {{ db_name }} WITH TEMPLATE=template0;"
       become: true
-      become_user: postgres
-      postgresql_db:
-        name: "{{ DB_NAME }}"
-        template: 'template0'
-        state: present
 
     - name: Ensure user has access to the new database
+      command: >
+        sudo -u postgres psql -c "CREATE USER {{ db_user }} WITH PASSWORD '{{ db_password }}';"
       become: true
-      become_user: postgres
-      postgresql_user:
-        db: "{{ DB_NAME }}"
-        name: "{{ POSTGRES_USER }}"
-        password: "{{ POSTGRES_PASSWORD }}"
-        priv: ALL
-        state: present
+
+    - name: Grant privileges to the user
+      command: >
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE {{ db_name }} TO {{ db_user }};"
+      become: true
 
     - name: Ensure user does not have unnecessary permissions
+      command: >
+        sudo -u postgres psql -c "ALTER USER {{ db_user }} WITH NOSUPERUSER NOCREATEDB;"
       become: true
-      become_user: postgres
-      postgresql_user:
-        name: "{{ POSTGRES_USER }}"
-        role_attr_flags: NOSUPERUSER,NOCREATEDB
-        state: present
 
     - name: Add some dummy data to our database
-      become: true
-      become_user: postgres
-      shell: psql {{ DB_NAME }} < /tmp/dump.sql
+      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < /tmp/dump.sql
 
