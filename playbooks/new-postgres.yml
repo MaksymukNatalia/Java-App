@@ -55,5 +55,11 @@
       shell: pwd
       register: playbook_path_output
     - debug: var=playbook_path_output.stdout
-    #- name: Add some dummy data to our database
-    #  shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./scripts/init.sql
+
+    - name: "Copy backup to the server"
+      copy:
+        src: "scripts/init.sql"
+        dest: "{{ $HOME }}"
+        
+    - name: Add some dummy data to our database
+      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./init.sql
