@@ -54,11 +54,11 @@
     - name: "Copy backup to the server"
       copy:
         src: "scripts/init.sql"
-        dest: "/home/bobrja"
+        dest: "~"
 
     - name: Creating a file .pgpass
       copy:
-        dest: "/home/bobrja/.pgpass"
+        dest: "~/.pgpass"
         content: |
            127.0.0.1:*:*:{{ db_user }}:{{ db_password }}
         mode: 0600
