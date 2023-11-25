@@ -1,0 +1,73 @@
+---
+- name: Create GCP Instance and PostgreSQL Database
+  hosts: "{{ host_db }}"
+  gather_facts: false
+  tasks:
+    - name: Install dependencies for PostgreSQL
+      apt:
+        name: "{{ item }}"
+        update_cache: true
+        state: latest
+      with_items:
+        - bash
+        - openssl
+        - libssl-dev
+        - libssl-doc
+
+    - name: Install PostgreSQL
+      apt:
+        name: "{{ item }}"
+        update_cache: true
+        state: present
+      with_items:
+        - postgresql
+        - postgresql-contrib
+        - libpq-dev
+        - python3-psycopg2
+
+    - name: Ensure the PostgreSQL service is running
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Create the database specified in vars
+      command: >
+        sudo -u postgres psql -c "CREATE DATABASE {{ db_name }} WITH TEMPLATE=template0;"
+      become: true
+
+    - name: Ensure user has access to the new database
+      command: >
+        sudo -u postgres psql -c "CREATE USER {{ db_user }} WITH PASSWORD '{{ db_password }}';"
+      become: true
+
+    - name: Grant privileges to the user
+      command: >
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE {{ db_name }} TO {{ db_user }};"
+      become: true
+
+    - name: Ensure user does not have unnecessary permissions
+      command: >
+        sudo -u postgres psql -c "ALTER USER {{ db_user }} WITH NOSUPERUSER NOCREATEDB;"
+      become: true
+
+    - name: "Copy backup to the server"
+      copy:
+        src: "scripts/init.sql"
+        dest: "~"
+
+    - name: Creating a file .pgpass
+      copy:
+        dest: "~/.pgpass"
+        content: |
+           127.0.0.1:*:*:{{ db_user }}:{{ db_password }}
+        mode: 0600
+
+    - name: Restore the database
+      postgresql_db:
+        state: restore
+        name: "{{ db_name }}"
+        target: init.dump
+      become: true
+        #   - name: Add some dummy data to our database
+        # shell: psql -h 127.0.0.1 -U {{ db_user }} -d {{ db_name }} < init.sql
