@@ -58,7 +58,7 @@
 
     - name: "Copy backup to the server"
       copy:
-        src: "../../scripts/init.sql"
+        src: "scripts/init.sql"
         dest: "/home/bobrja"
         
     - name: Add some dummy data to our database
