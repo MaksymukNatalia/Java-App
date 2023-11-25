@@ -61,5 +61,13 @@
         src: "scripts/init.sql"
         dest: "/home/bobrja"
         
-    - name: Add some dummy data to our database
-      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./init.sql
+#    - name: Add some dummy data to our database
+#      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./init.sql
+
+    - name: "Restore the database"
+      postgresql_db:
+        state: restore
+        name: "{{ db_name }}"
+        target: "/home/bobrja/init.sql"
+      become: yes
+      become_user: postgres
