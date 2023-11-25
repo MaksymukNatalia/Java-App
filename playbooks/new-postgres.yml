@@ -1,7 +1,6 @@
 ---
 - name: Create GCP Instance and PostgreSQL Database
   hosts: "{{ host_db }}"
-  connection: community.general
   gather_facts: false
   tasks:
     - name: Install dependencies for PostgreSQL
