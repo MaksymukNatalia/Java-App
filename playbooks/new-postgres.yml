@@ -58,9 +58,10 @@
 
     - name: Creating a file .pgpass
       copy:
-        dest: "~/.pgpass"
+        dest: "/home/bobrja/.pgpass"
         content: |
            127.0.0.1:*:*:{{ db_user }}:{{ db_password }}
+        mode: 0600
         
     - name: Add some dummy data to our database
       shell: psql -h 127.0.0.1 -U {{ db_user }} -d {{ db_name }} < init.sql
