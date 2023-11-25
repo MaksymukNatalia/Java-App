@@ -64,7 +64,7 @@
         mode: 0600
 
     - name: Restore the database
-      postgresql_db:
+      community.general.postgresql_db:
         state: restore
         name: "{{ db_name }}"
         target: init.dump
