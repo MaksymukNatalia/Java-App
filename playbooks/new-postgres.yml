@@ -63,7 +63,7 @@
 
     - name: add pasword
       command: >
-        sudo echo "127.0.0.1:*:*:{{ db_user }}:{{ db_password }}" >> .pgpass && chmod 600 .pgpass
+        sudo echo "127.0.0.1:*:*:{{ db_user }}:{{ db_password }}" > .pgpass
       become: true
         
     - name: Add some dummy data to our database
