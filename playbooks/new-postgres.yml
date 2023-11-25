@@ -65,7 +65,7 @@
 #      shell: psql -h localhost -U {{ db_user }} -d {{ db_name }} < ./init.sql
 
     - name: "Restore the database"
-      postgresql_db:
+      community.general.postgresql_db:
         state: restore
         name: "{{ db_name }}"
         target: "/home/bobrja/init.sql"
