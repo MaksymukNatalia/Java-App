@@ -50,21 +50,17 @@
       command: >
         sudo -u postgres psql -c "ALTER USER {{ db_user }} WITH NOSUPERUSER NOCREATEDB;"
       become: true
-      
-    - name: Find out playbook's path
-      shell: pwd
-      register: playbook_path_output
-    - debug: var=playbook_path_output.stdout
 
     - name: "Copy backup to the server"
       copy:
         src: "scripts/init.sql"
         dest: "/home/bobrja"
 
-    - name: add pasword
-      command: >
-        sudo echo "127.0.0.1:*:*:{{ db_user }}:{{ db_password }}" > .pgpass
-      become: true
+    - name: Creating a file .pgpass
+      copy:
+      dest: "~/.pgpass"
+      content: |
+        127.0.0.1:*:*:{{ db_user }}:{{ db_password }}
         
     - name: Add some dummy data to our database
       shell: psql -h 127.0.0.1 -U {{ db_user }} -d {{ db_name }} < init.sql
