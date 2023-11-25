@@ -1,7 +1,6 @@
 ---
 - name: Create GCP Instance and PostgreSQL Database
   hosts: "{{ host_db }}"
-  collection: community.general
   gather_facts: false
   tasks:
     - name: Install dependencies for PostgreSQL
@@ -52,7 +51,7 @@
         sudo -u postgres psql -c "ALTER USER {{ db_user }} WITH NOSUPERUSER NOCREATEDB;"
       become: true
 
-    - name: "Copy backup to the server"
+    - name: Copy backup to the server
       copy:
         src: "scripts/init.sql"
         dest: "~"
@@ -70,5 +69,3 @@
         name: "{{ db_name }}"
         target: init.dump
       become: true
-        #   - name: Add some dummy data to our database
-        # shell: psql -h 127.0.0.1 -U {{ db_user }} -d {{ db_name }} < init.sql
