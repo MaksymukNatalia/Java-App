@@ -1,4 +1,9 @@
 buildscript {
+    ext {
+        testDbHost = System.getProperty('TEST_DB_HOST')
+        testDbPort = System.getProperty('TEST_DB_PORT')
+        testDbName = System.getProperty('TEST_DB_NAME')
+    }
     repositories {
         mavenCentral()
     }
@@ -7,7 +12,11 @@ buildscript {
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.5'
     }
 }
-
+hibernate {
+    connection {
+        url = "jdbc:postgresql://${testDbHost}:${testDbPort}/${testDbName}"
+    }
+}
 plugins {
     id 'war'
     id 'java'
