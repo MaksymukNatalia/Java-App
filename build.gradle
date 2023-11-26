@@ -151,6 +151,9 @@ dependencies {
 
     //Postgres DB
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.10'
+    implementation group: 'org.postgresql.jdbc', name: 'postgresql', version: '42.2.10'
+
+
 
     // Logger
     implementation 'org.slf4j:jcl-over-slf4j:1.7.12'
