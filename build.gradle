@@ -151,7 +151,6 @@ dependencies {
 
     //Postgres DB
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.10'
-    implementation group: 'org.postgresql.jdbc', name: 'postgresql', version: '42.2.10'
 
 
 
