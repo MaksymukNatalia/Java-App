@@ -1,0 +1,58 @@
+---
+- name: Install Nexus Repository Manager
+  hosts: 34.27.100.19
+  become: yes
+
+  tasks:
+    - name: Update apt repositories
+      apt:
+        update_cache: yes
+
+    - name: Install OpenJDK 8
+      apt:
+        name: openjdk-8-jre-headless
+        state: present
+
+    - name: Download Nexus
+      get_url:
+        url: https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+        dest: /opt/latest-unix.tar.gz
+
+    - name: Extract Nexus
+      ansible.builtin.unarchive:
+        src: /opt/latest-unix.tar.gz
+        dest: /opt/
+        remote_src: yes
+
+    - name: Rename Nexus directory
+      command: mv /opt/nexus-3.62.0-01 /opt/nexus
+
+    - name: Create Nexus user
+      user:
+        name: nexus
+
+    - name: Allow Nexus user to run commands without a password
+      lineinfile:
+        path: /etc/sudoers
+        line: 'nexus ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Set ownership for Nexus directories
+      ansible.builtin.file:
+        path: "/opt/{{ item }}"
+        state: directory
+        owner: nexus
+        group: nexus
+      loop:
+        - nexus
+        - sonatype-work
+
+    - name: Configure Nexus run_as_user
+      lineinfile:
+        path: /opt/nexus/bin/nexus.rc
+        line: "run_as_user=\"nexus\""
+
+    - name: Start Nexus service
+      systemd:
+        name: nexus
+        state: started

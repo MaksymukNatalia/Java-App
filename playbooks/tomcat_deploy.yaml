@@ -1,0 +1,47 @@
+---
+- name: Deploy Tomcat Schedule project
+  hosts: "{{ HOST_TOMCAT }}"
+  vars_files:
+    - variables/variables.yml
+  become: yes
+  gather_facts: true 
+ 
+
+  tasks:
+    - name: Get current date and time
+      set_fact:
+        current_datetime: "{{ ansible_date_time }}"
+
+    - name: Extract year, month, and day
+      set_fact:
+        current_year: "{{ current_datetime.year }}"
+        current_month: "{{ current_datetime.month }}"
+        current_day: "{{ current_datetime.day }}"
+
+    - name: Format date as YY-MM-DAY
+      set_fact:
+        formatted_date: "{{ '%02d-%02d-%02d' | format(current_year|int % 100, current_month|int, current_day|int) }}"
+    - name: Find .war file
+      find:
+       paths: "/home/maksymuknataliaa/"
+        patterns: "*.war"
+      register: war_files
+
+    - name: Delete .war file
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      with_items: "{{ war_files.files }}"
+
+    - name: Display formatted date
+      debug:
+        msg: "Formatted date: {{ formatted_date }}"
+    - name: Download the archive from the URL
+      ansible.builtin.get_url:
+        url: "http://{{ HOST_NEXUS }}:8081/repository/schedule_versions/Versions/class_schedule/{{ formatted_date }}/class_schedule-{{ formatted_date }}.war"
+        dest: "/home/maksymuknataliaa/"       
+    
+    - name: Deploy war
+      command: "docker  cp class_schedule-23-11-27.war schedule_tomcat:/usr/local/tomcat/webapps/ROOT.war"
+      args:
+        chdir: "/home/maksymuknataliaa/"
