@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment{
-    	envfile = credentials('env_file_stage')
+    	envfile = credentials('.env_stage')
     	db_cred = credentials('postgres_user')
     	
 
