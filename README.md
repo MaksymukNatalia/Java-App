@@ -166,6 +166,8 @@ Diagram as a code:
 
 
 ### Project structure 
+For change diagram follow the link [drawio link](https://app.diagrams.net/) and choose the file from git repo.
+
 Diagram from draw.io:
 
-![project_diagram](https://github.com/MaksymukNatalia/Schedule/assets/146463470/6803315e-89de-48d5-aaf5-6eee0f733260)
+![project_diagrams](https://github.com/MaksymukNatalia/Schedule/assets/146463470/b95772c5-6428-4f46-b8ce-d3108fc1ebfe)
