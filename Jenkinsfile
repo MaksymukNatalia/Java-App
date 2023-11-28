@@ -7,19 +7,14 @@ pipeline {
 
     	}
     stages {
-        stage('Fetch code') {
-		        steps {
-		            git branch: 'staging', url: 'https://github.com/MaksymukNatalia/Schedule.git'
-		        }
-	    }
 	    stage('Create new network'){
 		    steps {
 			    script {
 		           
                     def networkName = "schedule_network_stage"
-                    sh 'docker stop tomcat_run'
-                    sh 'docker container prune -f'
-                    sh 'docker network prune -f'                   
+                    sh 'docker stop schedule_postgres_stage schedule_mongo_stage schedule_redis_stage tomcat_run'
+                    sh 'docker network prune -f'
+                    sh 'docker container prune -f'                  
                     sh "docker network create ${networkName}"
                     
                 }
@@ -62,7 +57,7 @@ pipeline {
         	        def networkName = "schedule_network_stage"
         	        
                     
-                    sh 'docker run  --name war-copier-stage  --env-file ${envfile} --network schedule_network_stage -v $(pwd):/app -w /app gradle:7.3.0-jdk11-alpine sh -c "gradle build && cp /app/build/libs/class_schedule.war ."'
+                    sh 'docker run  --name war-copier-stage -v war_file:/data   --env-file ${envfile} --network schedule_network_stage -v $(pwd):/app -w /app gradle:7.3.0-jdk11-alpine sh -c "gradle build && cp /app/build/libs/class_schedule.war  /data/class_schedule.war"'
                    
         	        
         	    }
@@ -82,14 +77,5 @@ pipeline {
         }
 
     }
-     
-    post {
-        always {
-            sh 'docker stop schedule_postgres_stage schedule_mongo_stage schedule_redis_stage'
-            sh 'docker container prune -f'
-            sh 'docker network prune -f'
-            
-        }
-        
-    }
-}
+
+ }
