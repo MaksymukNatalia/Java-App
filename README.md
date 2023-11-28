@@ -159,8 +159,15 @@ To deploy the application, follow these steps:
   - *Solution:* Verify the values of environment variables in the `.env` file and restart the application.
 
 
-### Project structure 
+### Application structure 
 Diagram as a code:
 
 ![schedule_web_service](https://github.com/MaksymukNatalia/Schedule/assets/146463470/258745e1-26df-48b8-b10f-38a4c21d551c)
 
+
+### Project structure 
+For change diagram follow the link [drawio link](https://app.diagrams.net/) and choose the file from git repo.
+
+Diagram from draw.io:
+
+![project_diagrams](https://github.com/MaksymukNatalia/Schedule/assets/146463470/b95772c5-6428-4f46-b8ce-d3108fc1ebfe)
