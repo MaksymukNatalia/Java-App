@@ -1,0 +1,58 @@
+---
+- name: Install a tomcat
+  hosts: "{{ tomcat_instance }}"
+  become: yes
+  gather_facts: false
+  vars:
+  
+  tasks:
+    - name: Update and upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true      
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: "{{ docker_url }}"
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: "{{ docker_repo }}"
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+
+    - name: Pull tomcat image
+      docker_image:
+        name: "{{ tomcat_img }}"
+        source: pull
+
+    - name: Create default containers
+      docker_container:
+        name: tomcat
+        image: "{{ tomcat_img }}"
+        state: started
+        ports:
+          - "{{ ports }}"

@@ -1,0 +1,107 @@
+---
+- name: Create GCP Instance and PostgreSQL Database
+  hosts: "{{ DB_HOST }}"
+  vars_files:
+    - variables/variables.yml
+  gather_facts: false
+  tasks:
+    - name: Install dependencies for PostgreSQL
+      apt:
+        name: "{{ item }}"
+        update_cache: true
+        state: latest
+      with_items:
+        - bash
+        - openssl
+        - libssl-dev
+        - libssl-doc
+
+    - name: Install PostgreSQL
+      apt:
+        name: "{{ item }}"
+        update_cache: true
+        state: present
+      with_items:
+        - postgresql-14
+        - postgresql-contrib
+        - libpq-dev
+        - python3-psycopg2
+
+    - name: Ensure the PostgreSQL service is running
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Ensure user has access to the new database
+      command: >
+        sudo -u postgres psql -c "ALTER USER postgres PASSWORD '{{ DB_PASSWORD }}';"
+      become: true
+
+    - name: Ensure user has access to the test database
+      command: >
+        sudo -u postgres psql -c "CREATE USER {{ DB_USERNAME }} WITH ENCRYPTED PASSWORD '{{ DB_PASSWORD }}';"
+      become: true
+
+    - name: Create the database specified in vars
+      command: >
+        sudo -u postgres psql -c "ALTER USER {{ DB_USERNAME }} SUPERUSER;"
+      become: true
+
+    - name: Create the test database specified in vars
+      command: >
+        sudo -u postgres psql -c "CREATE DATABASE {{ DB_NAME }} OWNER = {{ DB_USERNAME }};"
+      become: true
+
+    - name: Grant privileges to the user for the main database
+      command: >
+        sudo -u postgres psql -c "CREATE DATABASE {{ TEST_DB_NAME }} OWNER = {{ DB_USERNAME }};"
+      become: true
+
+    - name: Grant privileges to the user for the main database
+      command: >
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE {{ DB_NAME }} TO {{ DB_USERNAME }};"
+      become: true
+
+    - name: Grant privileges to the user for the test database
+      command: >
+        sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE {{ TEST_DB_NAME }} TO {{ DB_USERNAME }};"
+      become: true
+
+    - name: "Copy backup to the server"
+      copy:
+        src: "variables/init.dump"
+        dest: "~"
+
+    - name: Creating a file .pgpass
+      copy:
+        dest: "~/.pgpass"
+        content: |
+         127.0.0.1:*:*:{{ DB_USERNAME }}:{{ DB_PASSWORD }}
+         35.192.45.161:*:*:{{ DB_USERNAME }}:{{ DB_PASSWORD }}
+         10.128.0.23:*:*:{{ DB_USERNAME }}:{{ DB_PASSWORD }}
+        mode: 0600
+
+    - name: Add some dummy data to our database
+      shell: psql -h 127.0.0.1 -U {{ DB_USERNAME }} -d {{ DB_NAME }} < ~/init.dump
+      become: true
+
+    - name: Enable remote connections in PostgreSQL
+      lineinfile:
+        path: /etc/postgresql/14/main/postgresql.conf
+        regexp: '^#?listen_addresses.*'
+        line: 'listen_addresses = ''*'''
+        state: present
+
+    - name: Enable remote connections in pg_hba.conf
+      lineinfile:
+        path: /etc/postgresql/14/main/pg_hba.conf
+        line: 'host  all  all 0.0.0.0/0 scram-sha-256'
+        insertbefore: '^# IPv4 local connections:'
+        state: present
+      become: true
+
+    - name: Restart PostgreSQL Service
+      service:
+        name: postgresql
+        state: restarted
