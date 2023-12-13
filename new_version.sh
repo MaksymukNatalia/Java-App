@@ -2,7 +2,7 @@
 
 url="https://nexus-registry.hrtov.xyz/service/rest/repository/browse/stage/v2/stage/back/tags/"
 
-output=($(curl -s "$url" | grep -oP '<a href="\K[^"]+' | awk -F'/' '{print $NF}')
+output=$(curl -s "$url" | grep -oP '<a href="\K[^"]+' | awk -F'/' '{print $NF}')
 
 if [ -z "$output" ]; then
     new_version="1.0.0"
