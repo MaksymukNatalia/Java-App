@@ -1,4 +1,7 @@
 #!/bin/bash
+nexus_user="$1"
+nexus_pass="$2"
+echo $nexus_user
 
 url="https://nexus-registry.hrtov.xyz/service/rest/repository/browse/stage/v2/stage/back/tags/"
 
