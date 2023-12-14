@@ -2,7 +2,7 @@
 
 
 cteate_image () {
-  docker tag $1
+  docker tag tomcat_run nexus-registry.hrtov.xyz/stage/back:latest 
   docker tag nexus-registry.hrtov.xyz/stage/back:latest  nexus-registry.hrtov.xyz/stage/back:$1
   docker push nexus-registry.hrtov.xyz/stage/back:$1
   docker push nexus-registry.hrtov.xyz/stage/back:latest
