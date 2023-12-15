@@ -2,15 +2,13 @@
 
 
 cteate_image () {
-  docker tag tomcat_run nexus-registry.hrtov.xyz/$2/back:latest 
-  docker tag nexus-registry.hrtov.xyz/$2/back:latest  nexus-registry.hrtov.xyz/$2/back:$1
-  docker push nexus-registry.hrtov.xyz/$2/back:$1
-  docker push nexus-registry.hrtov.xyz/$2/back:latest
+  docker tag tomcat_run $2:latest 
+  docker tag $2:latest  $2:$1
+  docker push $2:$1
+  docker push $2:latest
 
 }
 
-
-#url="https://nexus-registry.hrtov.xyz/service/rest/repository/browse/stage/v2/stage/back/tags/"
 url=$1
 repo=$2
  
@@ -23,10 +21,8 @@ if [ -z "$output" ]; then
 else
     echo "All versions: $output"
     message=$(git log --pretty=format:%s -n 1)
-    
     echo $message
-
-
+    
     MINOR="Bug|Fixes"
     PATCH="New|Features"
     MAJOR="Breaking|Major"
@@ -35,11 +31,11 @@ else
     echo "Smallest value: $current_version"
 
 
-    if echo "$message" | grep -q -E -w $MINOR; then
+    if echo "$message" | grep -q -E -w $MAJOR; then
        new_version=$(awk -v current_version="$current_version" 'BEGIN {split(current_version, ver, "."); ver[1]+=1; print ver[1] ".0.0"}')
     elif echo "$message" | grep -q -E -w $PATCH; then
        new_version=$(awk -v current_version="$current_version" 'BEGIN {split(current_version, ver, "."); ver[2]+=1; print ver[1] "." ver[2] ".0"}')
-    elif echo "$message" | grep -q -E -w $MAJOR; then
+    elif echo "$message" | grep -q -E -w $MINOR; then
        new_version=$(awk -v current_version="$current_version" 'BEGIN {split(current_version, ver, "."); ver[3]+=1; print ver[1] "." ver[2] "." ver[3]}')
     else
        echo "Not creating a new version."
