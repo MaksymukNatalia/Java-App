@@ -29,7 +29,7 @@ else
     PATCH="New|Features"
     MAJOR="Breaking|Major"
 
-    current_version=$(curl -s "$url" | grep -oP '<a href="\K[^"]+' | awk -F'/' '{print $NF}' | sort -n | head -n 1)
+    current_version=$(curl -s "$url" | grep -oP '<a href="\K[^"]+' | grep -oP '\/\K\d+\.\d+\.\d+' | sort -V | tail -n 1)
     echo "Smallest value: $current_version"
 
 
