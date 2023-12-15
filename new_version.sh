@@ -20,9 +20,8 @@ if [ -z "$output" ]; then
     echo "Create first version: $new_version"
 else
     echo "All versions: $output"
- #   message=$(git log --pretty=format:%s -n 1)
-    message="New version with nexw color"
-
+    message=$(git log --pretty=format:%s -n 1)
+    
     echo $message
 
 
