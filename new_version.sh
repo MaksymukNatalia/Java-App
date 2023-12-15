@@ -10,7 +10,8 @@ cteate_image () {
 }
 
 
-url="https://nexus-registry.hrtov.xyz/service/rest/repository/browse/stage/v2/stage/back/tags/"
+#url="https://nexus-registry.hrtov.xyz/service/rest/repository/browse/stage/v2/stage/back/tags/"
+url=$1
 
 output=($(curl -s "$url" | grep -oP '<a href="\K[^"]+' | awk -F'/' '{print $NF}'))
 
