@@ -2,22 +2,23 @@
 
 
 cteate_image () {
-  docker tag tomcat_run nexus-registry.hrtov.xyz/stage/back:latest 
-  docker tag nexus-registry.hrtov.xyz/stage/back:latest  nexus-registry.hrtov.xyz/stage/back:$1
-  docker push nexus-registry.hrtov.xyz/stage/back:$1
-  docker push nexus-registry.hrtov.xyz/stage/back:latest
+  docker tag tomcat_run nexus-registry.hrtov.xyz/$2/back:latest 
+  docker tag nexus-registry.hrtov.xyz/$2/back:latest  nexus-registry.hrtov.xyz/$2/back:$1
+  docker push nexus-registry.hrtov.xyz/$2/back:$1
+  docker push nexus-registry.hrtov.xyz/$2/back:latest
 
 }
 
 
 #url="https://nexus-registry.hrtov.xyz/service/rest/repository/browse/stage/v2/stage/back/tags/"
 url=$1
-
+repo=$2
+ 
 output=($(curl -s "$url" | grep -oP '<a href="\K[^"]+' | awk -F'/' '{print $NF}'))
 
 if [ -z "$output" ]; then
     new_version="1.0.0"
-    cteate_image "$new_version"
+    cteate_image "$new_version" "$2"
     echo "Create first version: $new_version"
 else
     echo "All versions: $output"
@@ -50,7 +51,7 @@ else
 
     if [[ ! " ${output[@]} " =~ " $new_version " ]]; then
         echo "Version $new_version is not in the list."
-        cteate_image "$new_version"
+        cteate_image "$new_version" "$2"
     else
         echo "Version $new_version is in the list."
     fi
