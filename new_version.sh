@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-cteate_image () {
+create_image () {
   docker tag tomcat_run $2:latest 
   docker tag $2:latest  $2:$1
   docker push $2:$1
@@ -16,7 +16,7 @@ output=($(curl -s "$url" | grep -oP '<a href="\K[^"]+' | awk -F'/' '{print $NF}'
 
 if [ -z "$output" ]; then
     new_version="1.0.0"
-    cteate_image "$new_version" "$2"
+    create_image "$new_version" "$2"
     echo "Create first version: $new_version"
 else
     echo "All versions: $output"
@@ -47,7 +47,7 @@ else
 
     if [[ ! " ${output[@]} " =~ " $new_version " ]]; then
         echo "Version $new_version is not in the list."
-        cteate_image "$new_version" "$2"
+        create_image "$new_version" "$2"
     else
         echo "Version $new_version is in the list."
     fi
