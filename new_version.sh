@@ -20,7 +20,8 @@ if [ -z "$output" ]; then
     echo "Create first version: $new_version"
 else
     echo "All versions: $output"
-    message=$(git log --pretty=format:%s -n 1)
+    # message=$(git log --pretty=format:%s -n 1)
+    message=$3
     echo $message
     
     MINOR="Bug|Fixes"
